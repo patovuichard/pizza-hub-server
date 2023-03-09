@@ -1,8 +1,8 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
-const pizzaSchema = new Schema(
+const pizzaSchema = new mongoose.Schema(
   {
-    pizzaname: {
+    pizzaName: {
       type: String,
       required: true,
     },
@@ -11,8 +11,12 @@ const pizzaSchema = new Schema(
       enum: ["red", "white", "none"],
     },
     ingredients: [String],
+    imageUrl: {
+      type: String,
+      default: "https://www.flaticon.com/free-icon/user_149071",
+    },
     owner: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   },
@@ -21,6 +25,6 @@ const pizzaSchema = new Schema(
   }
 );
 
-const Pizza = model("Pizza", userSchema);
+const Pizza = mongoose.model("Pizza", pizzaSchema);
 
-module.export = Pizza;
+module.exports = Pizza;
