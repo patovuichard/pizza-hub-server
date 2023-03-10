@@ -14,17 +14,15 @@ const userSchema = new Schema(
     },
     firstName: String,
     lastName: String,
-    location: {
-      address: String,
-      city: String,
-    },
+    address: String,
+    city: String,
     imageUrl: {
       type: String,
       default: "https://www.flaticon.com/free-icon/user_149071",
     },
     role: {
       type: String,
-      enum: ["user", "restaurant"],
+      enum: ["Client", "Restaurant"],
     },
   },
   {

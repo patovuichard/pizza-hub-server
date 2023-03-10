@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", isAuthenticated, async (req, res, next) => {
   console.log(req.body);
   // console.log(req.payload);
-  const { pizzaName, imageUrl, sauce, ingredients, owner } = req.body
+  const { pizzaName, imageUrl, sauce, ingredients } = req.body
   try {
     await Pizza.create({
       pizzaName: pizzaName,
@@ -63,7 +63,7 @@ router.delete("/:id", isAuthenticated, async (req, res, next) => {
 // PATCH "/api/pizza/:id" --> modify one pizza by ID
 router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const {id} = req.params
-  const { pizzaName, imageUrl, sauce, ingredients, owner } = req.body
+  const { pizzaName, imageUrl, sauce, ingredients } = req.body
   try {
     await Pizza.findByIdAndUpdate( id, {
       pizzaName: pizzaName,
@@ -76,6 +76,17 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
     res.json("pizza modified")
   } catch (error) {
     next(error)  
+  }
+})
+
+// GET "/api/pizza/owner/:id" --> get all pizzas from one restaurant
+router.get("/owner/:ownerId", async (req, res, next) => {
+  const { ownerId } = req.params
+  try {
+    const pizzas = await Pizza.find({owner: ownerId})
+    res.json(pizzas)
+  } catch (error) {
+    next(error)
   }
 })
 
