@@ -65,13 +65,12 @@ router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const {id} = req.params
   const { pizzaName, imageUrl, sauce, ingredients } = req.body
   try {
-    await Pizza.findByIdAndUpdate( id, {
+    await Pizza.findByIdAndUpdate(id, {
       pizzaName: pizzaName,
       imageUrl: imageUrl,
       sauce: sauce,
       ingredients: ingredients,
       owner: req.payload._id,
-      // owner: owner,
     })
     res.json("pizza modified")
   } catch (error) {

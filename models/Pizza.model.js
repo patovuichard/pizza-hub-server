@@ -13,7 +13,7 @@ const pizzaSchema = new mongoose.Schema(
     ingredients: [String],
     imageUrl: {
       type: String,
-      default: "https://www.flaticon.com/free-icon/user_149071",
+      default: "https://res.cloudinary.com/drxbzntov/image/upload/v1678717809/pizza-hub/pizza-svgrepo-com_2_lapjte.png",
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

@@ -36,6 +36,7 @@ router.patch("/", isAuthenticated, async (req, res, next) => {
 
 // GET "/api/user/:id" --> get some data from user with "id"
 router.get("/:id", async (req, res, next) => {
+  // console.log(req.params);
   const { id } = req.params;
   try {
     const restaurant = await User.findById(id).select({
@@ -65,10 +66,9 @@ router.get("/restaurant/all", async (req, res, next) => {
 
 // DELETE "/api/user" --> remove user from DB
 router.delete("/", isAuthenticated, async (req, res, next) => {
-  console.log(req.payload);
-  const { id } = req.payload._id;
+  // console.log(req.payload);
   try {
-    await User.findByIdAndDelete(id);
+    await User.findByIdAndDelete(req.payload._id);
     res.json("user eliminated");
   } catch (error) {
     next(error);
