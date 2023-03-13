@@ -1,17 +1,17 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
-const orderSchema = new Schema(
+const orderSchema = new mongoose.Schema(
   {
     pendingApproval: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
     },
     pizzaOrder: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Pizza",
     },
-    owner: {
-      type: Schema.Types.ObjectId,
+    orderOwner: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   },
@@ -20,6 +20,6 @@ const orderSchema = new Schema(
   }
 );
 
-const OrderModel = model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
-module.exports = OrderModel;
+module.exports = Order;

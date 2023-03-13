@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
   try {
     const response = await Pizza.find()
     // .select({pizzaName: true, imageUrl: true})
-    console.log(response);
+    // console.log(response);
     res.json(response)
   } catch (error) {
     next(error)
@@ -37,7 +37,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 })
 
 // GET "/api/pizza/:id" --> get all info about one pizza by ID
-router.get("/:id", isAuthenticated, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   const {id} = req.params
   try {
     const response = await Pizza.findById( id )

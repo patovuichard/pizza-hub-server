@@ -4,11 +4,11 @@ const User = require("../models/User.model.js");
 
 // GET "/api/user" -->  get all data from authenticated user
 router.get("/", isAuthenticated, async (req, res, next) => {
-  console.log(req.payload);
-  const { id } = req.payload._id;
+  // console.log(req.payload);
+  // const { id } = req.payload._id;
   try {
-    const response = await User.findById(id);
-    console.log(response);
+    const response = await User.findById(req.payload._id).select({ password: 0 });
+    // console.log(response);
     res.json(response);
   } catch (error) {
     next(error);
@@ -17,17 +17,17 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 
 // PATCH "/api/user" --> modify data from authenticated user
 router.patch("/", isAuthenticated, async (req, res, next) => {
-  console.log(req.payload);
-  const { id } = req.payload._id;
+  // console.log(req.payload);
+  // console.log(req.body)
   const { firstName, lastName, imageUrl, address, city } = req.body;
   try {
-    await User.findByIdAndUpdate(id, {
+    await User.findByIdAndUpdate(req.payload._id, {
       firstName,
       lastName,
       imageUrl,
       address,
       city,
-    }).select({ password: 0 });
+    })
     res.json("user modified");
   } catch (error) {
     next(error);

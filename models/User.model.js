@@ -18,7 +18,7 @@ const userSchema = new Schema(
     city: String,
     imageUrl: {
       type: String,
-      default: "https://www.flaticon.com/free-icon/user_149071",
+      default: "https://res.cloudinary.com/drxbzntov/image/upload/v1678715180/pizza-hub/yvrxu9nsbipxxls53ph3.png",
     },
     role: {
       type: String,

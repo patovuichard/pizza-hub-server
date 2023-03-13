@@ -16,4 +16,7 @@ router.use("/pizza", pizzaRoutes);
 const orderRoutes = require("./order.routes.js");
 router.use("/order", orderRoutes);
 
+const uploadRoutes = require("./upload.routes");
+router.use("/upload", uploadRoutes);
+
 module.exports = router;
