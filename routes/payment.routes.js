@@ -2,14 +2,13 @@ const Pizza = require("../models/Pizza.model");
 
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // make sure to add your Stripe Secret Key to the .env
+const Payment = require("../models/Payment.model.js")
 
 router.post("/create-payment-intent", async (req, res) => {
 
   const productId = req.body._id; // this is how we will receive the productId the user is trying to purchase. This can also later be set to receive via params.
 
   try {
-
-    // TODO . this is where you will later get the correct price to be paid
     const product = await Pizza.findById(productId)
     const priceToPay = (product.price) * 100
     const desriptionPurchase = `Pizza `+product.pizzaName
@@ -23,7 +22,14 @@ router.post("/create-payment-intent", async (req, res) => {
       },
     });
 
-    // TODO on part 2. this is where you will later create a Payment Document
+    await Payment.create({
+      price: priceToPay,
+      product: productId,
+      status: "incomplete",
+      paymentIntentId: paymentIntent.id,
+      clientSecret: paymentIntent.client_secret,
+      buyer: req.payload, // example to add who bought the product (not done in this example)
+    })
   
     res.send({
       clientSecret: paymentIntent.client_secret, // the client secret will be sent to the FE after the stripe payment intent creation
@@ -31,6 +37,25 @@ router.post("/create-payment-intent", async (req, res) => {
     
   } catch (error) {
     next(error)
+  }
+});
+
+router.patch("/update-payment-intent", async (req, res, next) => {
+  const { clientSecret, paymentIntentId } = req.body;
+
+  try {
+
+    await Payment.findOneAndUpdate({
+      clientSecret: clientSecret,
+      paymentIntentId: paymentIntentId,
+    },{ 
+      status: "succeeded" 
+    });
+
+    res.status(200).json();
+
+  } catch (error) {
+    next(error);
   }
 });
 
