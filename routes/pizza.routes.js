@@ -19,13 +19,14 @@ router.get("/", async (req, res, next) => {
 router.post("/", isAuthenticated, async (req, res, next) => {
   console.log(req.body);
   // console.log(req.payload);
-  const { pizzaName, imageUrl, sauce, ingredients } = req.body
+  const { pizzaName, imageUrl, sauce, ingredients, price } = req.body
   try {
     await Pizza.create({
       pizzaName: pizzaName,
       imageUrl: imageUrl,
       sauce: sauce,
       ingredients: ingredients,
+      price: price,
       owner: req.payload._id,
       // owner: owner,
     })
@@ -63,13 +64,14 @@ router.delete("/:id", isAuthenticated, async (req, res, next) => {
 // PATCH "/api/pizza/:id" --> modify one pizza by ID
 router.patch("/:id", isAuthenticated, async (req, res, next) => {
   const {id} = req.params
-  const { pizzaName, imageUrl, sauce, ingredients } = req.body
+  const { pizzaName, imageUrl, sauce, ingredients, price } = req.body
   try {
     await Pizza.findByIdAndUpdate(id, {
       pizzaName: pizzaName,
       imageUrl: imageUrl,
       sauce: sauce,
       ingredients: ingredients,
+      price: price,
       owner: req.payload._id,
     })
     res.json("pizza modified")
