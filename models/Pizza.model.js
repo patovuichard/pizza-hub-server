@@ -19,6 +19,7 @@ const pizzaSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    price: Number,
   },
   {
     timestamps: true,
