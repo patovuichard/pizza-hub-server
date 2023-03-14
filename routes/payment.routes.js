@@ -12,6 +12,7 @@ router.post("/create-payment-intent", async (req, res) => {
     const product = await Pizza.findById(productId)
     const priceToPay = (product.price) * 100
     const desriptionPurchase = `Pizza `+product.pizzaName
+    
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: priceToPay,

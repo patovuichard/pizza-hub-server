@@ -18,8 +18,8 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 // PATCH "/api/user" --> modify data from authenticated user
 router.patch("/", isAuthenticated, async (req, res, next) => {
   // console.log(req.payload);
-  // console.log(req.body)
-  const { firstName, lastName, imageUrl, address, city } = req.body;
+  console.log(req.body)
+  const { firstName, lastName, imageUrl, address, city, coordinates } = req.body;
   try {
     await User.findByIdAndUpdate(req.payload._id, {
       firstName,
@@ -27,6 +27,7 @@ router.patch("/", isAuthenticated, async (req, res, next) => {
       imageUrl,
       address,
       city,
+      coordinates,
     })
     res.json("user modified");
   } catch (error) {
@@ -57,6 +58,7 @@ router.get("/restaurant/all", async (req, res, next) => {
     const pizzerias = await User.find({ role: "Restaurant" }).select({
       username: 1,
       imageUrl: 1,
+      coordinates: 1,
     });
     res.json(pizzerias);
   } catch (error) {

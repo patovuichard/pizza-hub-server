@@ -14,6 +14,7 @@ const userSchema = new Schema(
     },
     firstName: String,
     lastName: String,
+    coordinates: [Number], // this array will hold only two numeric values: [latitude, longitude]
     address: String,
     city: String,
     imageUrl: {
