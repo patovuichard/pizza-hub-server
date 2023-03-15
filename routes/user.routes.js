@@ -41,10 +41,7 @@ router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const restaurant = await User.findById(id).select({
-      username: 1,
-      imageUrl: 1,
-      address: 1,
-      city: 1,
+      password: 0,
     });
     res.json(restaurant);
   } catch (error) {
@@ -56,9 +53,7 @@ router.get("/:id", async (req, res, next) => {
 router.get("/restaurant/all", async (req, res, next) => {
   try {
     const pizzerias = await User.find({ role: "Restaurant" }).select({
-      username: 1,
-      imageUrl: 1,
-      coordinates: 1,
+      password: 0,
     });
     res.json(pizzerias);
   } catch (error) {
