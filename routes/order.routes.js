@@ -7,7 +7,17 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   try {
     const response = await Order.find({ orderOwner: req.payload._id })
       .populate("pizzaOrder");
-    console.log(response);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET "/api/order/restaurant" --> get all orders from user
+router.get("/restaurant", isAuthenticated, async (req, res, next) => {
+  try {
+    const response = await Order.find({ pizzaOwner: req.payload._id })
+      .populate("pizzaOrder");
     res.json(response);
   } catch (error) {
     next(error);
@@ -17,11 +27,13 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 // POST "/api/order/pizza/:id" --> user creates an order
 router.post("/pizza/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
+  const {ownerId} = req.body
   try {
     await Order.create({
       pendingApproval: "pending",
       pizzaOrder: id,
       orderOwner: req.payload._id,
+      pizzaOwner: ownerId,
     });
     res.json("order created");
     // res.status(201).json()
@@ -30,6 +42,15 @@ router.post("/pizza/:id", isAuthenticated, async (req, res, next) => {
   }
 });
 
-
+// DELETE "/api/order/:id" --> client cancels order
+router.delete("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Order.findByIdAndDelete(id)
+    res.json("order removed")
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router;

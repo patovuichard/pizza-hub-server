@@ -29,7 +29,6 @@ router.post("/", isAuthenticated, async (req, res, next) => {
       ingredients: ingredients,
       price: price,
       owner: req.payload._id,
-      // owner: owner,
     })
     // res.json("pizza creada")
     res.status(200).json()
@@ -43,7 +42,7 @@ router.get("/:id", async (req, res, next) => {
   const {id} = req.params
   try {
     const response = await Pizza.findById( id )
-    // .populate("owner")
+    .populate("owner")
     // console.log(response)
     res.json(response)
   } catch (error) {
