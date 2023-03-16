@@ -43,11 +43,35 @@ router.post("/pizza/:id", isAuthenticated, async (req, res, next) => {
 });
 
 // DELETE "/api/order/:id" --> client cancels order
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   try {
     await Order.findByIdAndDelete(id)
     res.json("order removed")
+  } catch (error) {
+    next(error)
+  }
+})
+
+// PATCH "api/order/:id" --> Restaurant accepts order
+router.patch("/:id", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Order.findByIdAndUpdate(id,{
+      pendingApproval: "accepted",
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+// PATCH "api/order/:id/reject" --> Restaurant accepts order
+router.patch("/:id/reject", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Order.findByIdAndUpdate(id,{
+      pendingApproval: "rejected",
+    })
   } catch (error) {
     next(error)
   }
