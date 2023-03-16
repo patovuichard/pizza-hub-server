@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares.js");
-const Pizza = require("../models/Pizza.model.js")
+const Pizza = require("../models/Pizza.model.js");
+const User = require("../models/User.model.js");
 
 
 // GET "/api/pizza" --> get all pizzas (name and picture)
@@ -45,6 +46,32 @@ router.get("/:id", async (req, res, next) => {
     // .populate("owner")
     // console.log(response)
     res.json(response)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// POST "/api/pizza/:id" --> add pizza to favourite pizzas
+router.post("/:id", isAuthenticated, async (req, res, next)  => {
+  const {id} = req.params
+  try {
+    await User.findByIdAndUpdate(req.payload._id,{
+      $addToSet: { favouritePizzas: id}
+    })
+    res.json("Pizza added to favs")
+  } catch (error) {
+    next(error)
+  }
+})
+
+// POST "/api/pizza/:id/remove" --> add pizza to favourite pizzas
+router.post("/:id/remove", isAuthenticated, async (req, res, next)  => {
+  const {id} = req.params
+  try {
+    await User.findByIdAndUpdate(req.payload._id,{
+      $pull: { favouritePizzas: id}
+    })
+    res.json("Pizza removed from favs")
   } catch (error) {
     next(error)
   }

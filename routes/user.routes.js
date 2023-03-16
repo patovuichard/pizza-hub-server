@@ -7,7 +7,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   // console.log(req.payload);
   // const { id } = req.payload._id;
   try {
-    const response = await User.findById(req.payload._id).select({ password: 0 });
+    const response = await User.findById(req.payload._id).select({ password: 0 }).populate("favouritePizzas");
     // console.log(response);
     res.json(response);
   } catch (error) {

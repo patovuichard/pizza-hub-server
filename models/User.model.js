@@ -17,9 +17,16 @@ const userSchema = new Schema(
     coordinates: [Number], // this array will hold only two numeric values: [latitude, longitude]
     address: String,
     city: String,
+    favouritePizzas: [
+      {
+       type: Schema.Types.ObjectId,
+       ref: "Pizza" 
+      }
+    ],
     imageUrl: {
       type: String,
-      default: "https://res.cloudinary.com/drxbzntov/image/upload/v1678715180/pizza-hub/yvrxu9nsbipxxls53ph3.png",
+      default:
+        "https://res.cloudinary.com/drxbzntov/image/upload/v1678715180/pizza-hub/yvrxu9nsbipxxls53ph3.png",
     },
     role: {
       type: String,
