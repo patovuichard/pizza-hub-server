@@ -8,8 +8,6 @@ const User = require("../models/User.model.js");
 router.get("/", async (req, res, next) => {
   try {
     const response = await Pizza.find()
-    // .select({pizzaName: true, imageUrl: true})
-    // console.log(response);
     res.json(response)
   } catch (error) {
     next(error)
@@ -18,8 +16,6 @@ router.get("/", async (req, res, next) => {
 
 // POST "/api/pizza" --> create a new pizza
 router.post("/", isAuthenticated, async (req, res, next) => {
-  console.log(req.body);
-  // console.log(req.payload);
   const { pizzaName, imageUrl, sauce, ingredients, price } = req.body
   try {
     await Pizza.create({
@@ -30,7 +26,6 @@ router.post("/", isAuthenticated, async (req, res, next) => {
       price: price,
       owner: req.payload._id,
     })
-    // res.json("pizza creada")
     res.status(200).json()
   } catch (error) {
     next(error)
@@ -43,7 +38,6 @@ router.get("/:id", async (req, res, next) => {
   try {
     const response = await Pizza.findById( id )
     .populate("owner")
-    // console.log(response)
     res.json(response)
   } catch (error) {
     next(error)

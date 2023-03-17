@@ -7,17 +7,10 @@ const isAuthenticated = require("../middlewares/auth.middlewares.js");
 // POST "/api/auth/signup" --> Registro al user en la DB
 router.post("/signup", async (req, res, next) => {
   const { username, password, role } = req.body;
-  // console.log(req.body);
-  // console.log(username, password);
-
-  // 1. Validacaciones de BackEnd
-  // Validar que los campos no esten vacios
   if (!username || !password) {
     res.status(400).json({ errorMessage: "Los campos no deben estar vacios" });
     return;
   }
-  // Validar que la contraseña sea lo suficientemente fuerte
-
   try {
     // Encripto la contraseña
     const salt = await bcrypt.genSalt(10);
@@ -38,7 +31,6 @@ router.post("/signup", async (req, res, next) => {
 // POST "/api/auth/login" --> Validar las credenciales del user
 router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
-  // console.log(username, password)
   if (!username || !password) {
     res.status(400).json({ errorMessage: "Los campos no deben estar vacios" });
     return;
@@ -57,14 +49,9 @@ router.post("/login", async (req, res, next) => {
     if (!isPasswordCorrect) {
       res.status(400).json({ errorMessage: "Credenciales no validas" });
     }
-    // Credenciales ya validadas del user
-    // Aqui vendria el sistema de sesiones
-
-    // Payload es el contenido del Token que indentifica al user
     const payload = {
       _id: foundUser._id,
       username: foundUser.username,
-      // si tuviesenmos roles, podrian ir en payload
     };
     // Generamos el Token
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -81,13 +68,6 @@ router.post("/login", async (req, res, next) => {
 // GET "/api/auth/verify" --> Verificar si el user esta activo
 router.get("/verify", isAuthenticated, (req, res, next) => {
   // Esta ruta pasara por un middleware para verificar la validez del Token
-
-  // EN EL BACK END VAMOS A TENER UNA FORMA DE SABER QUIEN ES EL USUARIO ACTIVO
-  // ESTO SERA SIMILAR AL REQ.SESSION.ACTIVEUSER
-  // EN ESTA ESTRUCTURA SE LLAMA AL req.payload
-  console.log(req.payload);
-
-  // Si llego a este punto, no tengo problemas
   res.status(200).json(req.payload);
 });
 
